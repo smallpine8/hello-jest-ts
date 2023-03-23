@@ -1,5 +1,6 @@
 {
   "name": "hello-jest-ts",
+  "type": "module",
   "version": "1.0.0",
   "description": "jest sample code",
   "main": "index.js",
