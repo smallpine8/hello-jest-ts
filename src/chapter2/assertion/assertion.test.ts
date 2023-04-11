@@ -101,3 +101,92 @@ test('0.1 + 0.2 is greater than 0.3 or 0.1 + 0.2 equals to 0.3000000000000004', 
   expect(0.1 + 0.2 >= 0.3).toBe(true)
   expect(0.1 + 0.2 >= 0.3000000000000004).not.toBe(true)
 })
+
+const fruitList = ['Apple', 'Lemon', 'Orange']
+
+// 1つの要素が含まれていることを検証
+test('contains Apple in fruitList', () => {
+  expect(fruitList).toContain('Apple')
+})
+
+// 複数の要素が含まれていることを検証
+test('contains Apple and Orange in fruitList', () => {
+  expect(fruitList).toEqual(expect.arrayContaining(['Apple', 'Orange']))
+})
+
+const itemList = [
+  {name: 'Apple', price: 100},
+  {name: 'Lemon', price: 150},
+  {name: 'Orange', price: 120}
+]
+
+// 1つの要素が含まれていることを検証
+test('contains Apple in itemList', () => {
+  expect(itemList).toContainEqual({name: 'Apple', price: 100})
+})
+
+// 複数の要素が含まれていることを検証
+test('contains Apple and Orange in itemList', () => {
+  expect(itemList).toEqual(
+    expect.arrayContaining([
+      { name: 'Apple', price: 100 },
+      { name: 'Orange', price: 120 },
+    ])
+  )
+})
+
+const ciBuild = {
+  numer: 1,
+  duration: 12000,
+  state: 'success',
+  triggerParameters: {
+    is_scheduled: true,
+  },
+  type: 'scheduled_pipeline',
+  actor: {
+    login: 'Taka',
+  },
+}
+
+// 1つのプロパティを検証
+test('build state should be success', () => {
+  expect(ciBuild).toHaveProperty('state', 'success')
+})
+
+// ネストしたプロパティを検証
+test('actor should be Taka', () => {
+  expect(ciBuild).toHaveProperty('actor.login', 'Taka')
+})
+
+// 複数のプロパティを検証
+test('triggered by the scheduled pipeline', () => {
+  expect(ciBuild).toEqual(
+    expect.objectContaining({
+      triggerParameters: expect.objectContaining({is_scheduled: true}),
+      type: 'scheduled_pipeline',
+    })
+  )
+})
+
+class User {
+  name: string
+  password: string
+  constructor({name, password}: {name: string, password: string}) {
+    if (password.length < 6) throw new Error('The password length must be at least 6 characters')
+    this.name = name
+    this.password = password
+  }
+}
+
+test('crates a new user with a 6-characters password', () => {
+  expect(new User({name: 'hoge', password: '123456'})).toEqual({
+    name:'hoge',
+    password: '123456'
+  })
+})
+
+test('throw Error when the length of password is less than 6', () => {
+  expect(() => new User({name: 'hoge', password: '12345'})).toThrow() // Errorがthrowされたかチェック
+  expect(() => new User({name: 'hoge', password: '12345'})).toThrow(Error) // 型のチェック
+  expect(() => new User({name: 'hoge', password: '12345'})).toThrow('throw Error when the length of password is less than 6') // エラーメッセージのチェック
+})
