@@ -190,3 +190,23 @@ test('throw Error when the length of password is less than 6', () => {
   expect(() => new User({name: 'hoge', password: '12345'})).toThrow(Error) // 型のチェック
   expect(() => new User({name: 'hoge', password: '12345'})).toThrow('throw Error when the length of password is less than 6') // エラーメッセージのチェック
 })
+
+const fetchDataWithPromiseResolve = () => {
+  return new Promise(resolve => setTimeout(resolve, 1000, 'lemon'))
+}
+
+test('return lemon', () => {
+  return expect(fetchDataWithPromiseResolve()).resolves.toBe('lemon')
+})
+
+// async/awaitを使用
+test('return lemon with async/await', async () => {
+  await expect(fetchDataWithPromiseResolve()).resolves.toBe('lemon')
+})
+
+const fetchDataWithPromiseReject = () => new Promise((resolve, reject) => setTimeout(reject, 1000, new Error('lemon does not exist')))
+
+// .rejectsを利用して失敗時の値を受け取る
+test('failed to return lemon', () => {
+  return expect(fetchDataWithPromiseReject).rejects.toThrow('lemon does not exist')
+})
