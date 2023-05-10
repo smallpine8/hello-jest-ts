@@ -26,4 +26,15 @@ describe("simple ui test", () => {
     const message = document.querySelector('#message > p')
     expect(message?.textContent).toBe('You Passed!!')
   })
+
+  it("shows only one message after clicking the button twice", () => {
+    const button = document.querySelector('#showMessage')
+    const click = new window.MouseEvent('click')
+    button?.dispatchEvent(click)
+    button?.dispatchEvent(click) //2回ボタンをクリックする
+
+    const messages = document.querySelectorAll("#message > p")
+    expect(messages.length).toBe(1) // 要素が1つであること
+    expect(messages[0].textContent).toBe("You Passed!!!")
+  })
 })
