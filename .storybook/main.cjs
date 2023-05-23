@@ -7,5 +7,8 @@ module.exports = {
   },
   docs: {
     autodocs: true
+  },
+  features: {
+    interactionsDebugger: true // interactionsDebuggerを有効化
   }
 };
